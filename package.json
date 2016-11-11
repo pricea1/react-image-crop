@@ -1,0 +1,53 @@
+{
+  "name": "react-image-crop",
+  "version": "0.0.14",
+  "description": "A responsive image cropping tool for React",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DominicTobias/react-image-crop.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --progress --colors --watch --config demo/webpack.config.js",
+    "release-js": "babel lib/ReactCrop.jsx --out-file dist/ReactCrop.js",
+    "release-css": "node-sass lib/ReactCrop.scss dist/ReactCrop.css",
+    "release": "npm run release-js && npm run release-css",
+    "sass-watch": "node-sass lib/ReactCrop.scss dist/ReactCrop.css --watch"
+  },
+  "author": {
+    "name": "Dominic Tobias",
+    "email": "dominic.tobias@gmail.com"
+  },
+  "keywords": [
+    "react",
+    "image",
+    "crop",
+    "react-component"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.4.0",
+    "babel-core": "^6.4.0",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "node-sass": "^3.4.2",
+    "react-dom": "^0.14",
+    "webpack": "^1.12.1"
+  },
+  "dependencies": {
+    "react": "^0.14"
+  },
+  "gitHead": "2cb3bafa0665ad766e1b4399021406519135af9d",
+  "readme": "# React Image Crop\n\nA responsive image cropping tool for React.\n\n[![React Image Crop on NPM](https://img.shields.io/npm/v/react-image-crop.svg)](https://www.npmjs.com/package/react-image-crop)\n\n![ReactCrop Demo](https://raw.githubusercontent.com/DominicTobias/react-image-crop/master/crop-demo.gif)\n\n## Features\n\n- Responsive\n- Touch enabled\n- Free-form or fixed aspect crops\n- Keyboard support for nudging selection\n- Min/max crop size\n\n## Usage\n\nInclude the main js module, e.g.:\n\n```js\nvar ReactCrop = require('react-image-crop');\n// or es6:\nimport ReactCrop from 'react-image-crop';\n```\n\nInclude either `dist/ReactCrop.css` or `ReactCrop.scss`.\n\n## Props\n\n#### src (required)\n\n```jsx\n<ReactCrop src='path/to/image.jpg' />\n```\n\nYou can of course pass a blob path or base64 data.\n\n#### crop (optional)\n\nAll crop values are in percentages, and are relative to the image. All crop params are optional.\n\n```jsx\nvar crop = {\n\tx: 20,\n\ty: 10,\n\twidth: 30,\n\theight: 10\n}\n\n<ReactCrop src='path/to/image.jpg' crop={crop} />\n```\n\nIf you want a fixed aspect you only need to specify a width *or* a height:\n\n ```jsx\nvar crop = {\n\twidth: 30,\n\taspect: 16/9\n}\n```\n\n..Or you can omit both and only specify the aspect.\n\n#### minWidth (optional)\n\nA minimum crop width.\n\n#### minHeight (optional)\n\nA minimum crop height.\n\n#### keepSelection (optional)\n\nIf true is passed then selection can't be disabled if the user clicks outside the selection area.\n\n#### onChange(crop) (optional)\n\nA callback which happens for every change of the crop (i.e. many times as you are dragging/resizing). Passes the current crop state object.\n\n#### onComplete(crop) (optional)\n\nA callback which happens after a resize, drag, or nudge. Passes the current crop state object.\n\n## What about showing the crop on the client?\n\nI wanted to keep this component focused so I didn't provide this. Normally a cropped image will be rendered and cached by a backend. However here are some tips for client-side crop previews:\n\n- You can fake a crop in pure CSS, but in order to do this you need to know the maximum width & height of the crop preview and then perform the calc again if the container size changes (since this technique is only possible using pixels). It's advantage is that it's instantaneous:\n\n[Example gist](https://gist.github.com/DominicTobias/6aa43d03bc12232ef723)\n\n- The other technique is to map the cropped image to a canvas, and then get the base64 of the canvas via [toDataURL](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL) and set this as an image source. The advantage is that the preview behaves like a proper image and is responsive. Now this is important:\n\n1. [toDataURL](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL) is synchronous and will block the main thread, for large images this could be for as long as a couple of seconds. *Always* use `toDataURL('image/jpeg')` otherwise it will default to `image/png` and the conversion will be significantly slower.\n\n2. Keep an eye out for [toBlob](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob) when this lands on more browsers, as it will be both faster and asynchronous.\n\n3. Another option to make the conversion faster is to scale the image down before converting it to a base64 (see example in gist).\n\n[Example gist](https://gist.github.com/DominicTobias/b1fb501349893922ec7f)\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/DominicTobias/react-image-crop/issues"
+  },
+  "homepage": "https://github.com/DominicTobias/react-image-crop#readme",
+  "_id": "react-image-crop@0.0.14",
+  "_shasum": "fda1deba0cc9b836271124a80688299eba346b69",
+  "_from": "pricea1/react-image-crop",
+  "_resolved": "git://github.com/pricea1/react-image-crop.git#2cb3bafa0665ad766e1b4399021406519135af9d"
+}
